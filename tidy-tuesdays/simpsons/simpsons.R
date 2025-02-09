@@ -63,6 +63,11 @@ lowest_rating <- episodes %>%
   filter(imdb_rating == min(imdb_rating, na.rm = TRUE)) %>%
   pull(imdb_rating)
 
+# plot ratings over time by season 
+ggplot(episodes, aes(x = episodes_id, y = episodes$imdb_rating, color = factor(episodes$season))) +
+  geom_line() +
+  scale_color_viridis_d()
+
 # find character names in episode titles
 main_characters <- c("Homer", "Marge", "Bart", "Lisa", "Maggie")
 name_counts <- sapply(main_characters, function(p) sum(grepl(p, episodes$title)))
