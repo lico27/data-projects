@@ -1,5 +1,19 @@
+```{css, echo=FALSE}
+body {
+  background-color: #303030;
+  color: #adb5bd;
+}
+a {
+  color: #66b2ff;
+}
+code {
+  background-color: #333;
+  color: #ffcc66;
+}
+```
+
 ---
-title: "An Analysis of Simpsons Episodes"
+title: "Worst. Analysis. Ever: An Exploration of Simpsons Episodes in R"
 author: "Liam Cottrell"
 date: "2025-02-04"
 output: html_document
@@ -20,14 +34,13 @@ The dataset comprises the following attributes:
 
 ```{r}
 # find the column titles
-
 names(episodes)
 ```
-There are `r nrow(episodes)` episodes in the dataset. 
+
+There are `r nrow(episodes)` episodes in the dataset.
 
 ```{r}
 # find the first and last episodes
-
 first_ep <- episodes %>%
   filter(id == min(id)) %>%
   pull(title)
@@ -53,7 +66,6 @@ The episodes range from Episode `r min(episodes_id)` ('`r first_ep`') in `r firs
 
 ```{r}
 # find highest IMDb ratings
-
 highest_rated_one <- episodes %>%
   filter(imdb_rating == max(imdb_rating, na.rm = TRUE)) %>%
   slice(1) %>%
@@ -87,7 +99,6 @@ Two episodes hold the honour of being highest rated: <em>`r highest_rated_one`</
 
 ```{r}
 # find lowest IMDb ratings
-
 lowest_rated <- episodes %>%
   filter(imdb_rating == min(imdb_rating, na.rm = TRUE)) %>%
   pull(title)
@@ -103,11 +114,18 @@ lowest_rating <- episodes %>%
 
 Season `r lowest_rated_season`'s <em>`r lowest_rated`</em>, with just `r lowest_rating`/10, is the lowest rated episode.
 
+### IMDb ratings over time
+
+```{r}
+ggplot(episodes, aes(x = episodes_id, y = episodes$imdb_rating, color = factor(episodes$season))) +
+  geom_line() +
+  scale_color_viridis_d()
+```
+
 ## Episode Titles
 
 ```{r}
 # find character names in episode titles
-
 main_characters <- c("Homer", "Marge", "Bart", "Lisa", "Maggie")
 name_counts <- sapply(main_characters, function(p) sum(grepl(p, episodes$title)))
 name_freq <- data.frame(Name = names(name_counts), Count = name_counts)
@@ -117,15 +135,8 @@ name_freq <- data.frame(Name = names(name_counts), Count = name_counts)
 
 ```{r}
 # visualise frequency of character names appearing in episode titles
-
 ggplot(name_freq, aes(x = Name, y = Count)) +
   geom_bar(stat = "identity") +
   theme_minimal()
 
 ```
-
-
-
-
-
-
