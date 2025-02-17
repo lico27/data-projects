@@ -117,6 +117,7 @@ Season `r lowest_rated_season`'s <em>`r lowest_rated`</em>, with just `r lowest_
 ### IMDb ratings over time
 
 ```{r}
+# plot ratings over time by season 
 ggplot(episodes, aes(x = episodes_id, y = episodes$imdb_rating, color = factor(episodes$season))) +
   geom_line() +
   scale_color_viridis_d()
