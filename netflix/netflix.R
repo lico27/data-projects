@@ -10,6 +10,10 @@ netflix <- clean_names(netflix)
 netflix <- netflix %>%
   rename(type = supplemental_video_type)
 
+# filter data - remove B's profile and types that are not NA
+netflix %>%
+  filter(profile != 'Bbbbbbb', is.na(type))
+
 # frequency that each device was used - a bad bar chart to practice ggplot
 device_count <- as.data.frame(table(netflix$device_type))
 
