@@ -14,9 +14,15 @@ netflix <- netflix %>%
 netflix %>%
   filter(profile != 'Bbbbbbb', is.na(type))
 
-# frequency that each device was used - a bad bar chart to practice ggplot
-device_count <- as.data.frame(table(netflix$device_type))
+# hide less commonly used devices
+device_count <- table(netflix$device_type)
+netflix$device_type[netflix$device_type %in% names(device_count[device_count < 75])] <- NA
 
-ggplot(device_count, aes(y = Var1, x = Freq)) +
-  geom_bar(stat = "identity", fill = "lightgreen", color = "black") +
-  labs(y = 'Device')
+# frequency that each device was used - a bad bar chart to practice ggplot
+common_devices <- as.data.frame(device_count)
+
+ggplot(common_devices, aes(x=reorder(Var1, Freq), y = Freq)) +
+  geom_bar(stat = "identity", fill = "seagreen", color = "black") +
+  labs(x = 'Device',
+       y = 'Frequency of Use') +
+  coord_flip()
