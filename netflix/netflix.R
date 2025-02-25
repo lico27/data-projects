@@ -22,7 +22,10 @@ netflix$device_type[netflix$device_type %in% names(device_count[device_count < 7
 common_devices <- as.data.frame(device_count)
 
 ggplot(common_devices, aes(x=reorder(Var1, Freq), y = Freq)) +
-  geom_bar(stat = "identity", fill = "seagreen", color = "black") +
+  geom_bar(stat = "identity", fill = "seagreen") +
   labs(x = 'Device',
-       y = 'Frequency of Use') +
+       y = 'Frequency of Use',
+       caption = 'x-axis uses log10 transformation') + 
+  scale_y_log10() +
+  theme_minimal() +
   coord_flip()
