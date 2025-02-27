@@ -10,9 +10,10 @@ netflix <- clean_names(netflix)
 netflix <- netflix %>%
   rename(type = supplemental_video_type)
 
-# filter data - remove B's profile and types that are not NA
+# filter data - remove B's profile and exclude unwanted columns
 netflix %>%
-  filter(profile != 'Bbbbbbb', is.na(type))
+  filter(profile != 'Bbbbbbb', is.na(type)) %>%
+  select(-type, -country, -attributes)
 
 # hide less commonly used devices
 device_count <- table(netflix$device_type)
