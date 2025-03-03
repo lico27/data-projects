@@ -1,0 +1,18 @@
+---
+title: "TidyTuesdays"
+author: "Liam Cottrell"
+date: "2025-03-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+longbeach <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-04/longbeach.csv')
+View(longbeach)
+
+
+
+```
+
