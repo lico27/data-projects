@@ -8,11 +8,33 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(waffle)
 
-longbeach <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-04/longbeach.csv')
-View(longbeach)
+longbeach <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-04/longbeach.csv')
+```
 
+## Data Analysis Plan
 
+- How long does it take an animal to be adopted in California?
+- Is there a relationship between animal colour and length of time to adopt?
+- What proportion of animals arrive in an injured or ill condition?
 
+```{r}
+# analyse intake condition
+intake_condition <- longbeach %>%
+  count(longbeach$intake_condition, name = "Frequency") %>%
+  filter(Frequency < 300) %>%
+  arrange(-Frequency)
+intake_condition
+```
+
+```{r}
+group <- c("group-1","group-2","group-3")
+value <- c(13,5,22)
+data1 <- data.frame(group,value)
+
+ggplot(intake_condition, aes(fill=`longbeach$intake_condition`, values=Frequency)) +
+  geom_waffle() +
+  theme_void()
 ```
 

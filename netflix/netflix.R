@@ -15,6 +15,15 @@ netflix %>%
   filter(profile != 'Bbbbbbb', is.na(type)) %>%
   select(-type, -country, -attributes)
 
+# get things watched over 10 times
+episode_count <- table(netflix$title)
+netflix$title[netflix$title %in% names(episode_count[episode_count < 30])] <- NA
+rewatched_episodes <- as.data.frame(episode_count)
+
+# arrange most watched episodes by watch count
+rewatched_episodes %>%
+  arrange(-Freq)
+
 # hide less commonly used devices
 device_count <- table(netflix$device_type)
 netflix$device_type[netflix$device_type %in% names(device_count[device_count < 75])] <- NA
