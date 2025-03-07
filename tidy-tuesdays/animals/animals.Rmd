@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(waffle)
+library(emojifont)
 
 longbeach <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-04/longbeach.csv')
 ```
@@ -17,24 +18,56 @@ longbeach <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytue
 
 - How long does it take an animal to be adopted in California?
 - Is there a relationship between animal colour and length of time to adopt?
+  - Group colours and remove unknowns
 - What proportion of animals arrive in an injured or ill condition?
+
+```{r}
+
+
+```
 
 ```{r}
 # analyse intake condition
 intake_condition <- longbeach %>%
   count(longbeach$intake_condition, name = "Frequency") %>%
-  filter(Frequency < 300) %>%
+  filter(Frequency > 10) %>%
   arrange(-Frequency)
 intake_condition
 ```
 
 ```{r}
-group <- c("group-1","group-2","group-3")
-value <- c(13,5,22)
-data1 <- data.frame(group,value)
+# analyse colour
+colour_animal <- longbeach %>%
+  count(primary_color, name = "Frequency") %>%
+  filter(Frequency > 10) %>%
+  arrange(-Frequency)
+colour_animal
+```
 
-ggplot(intake_condition, aes(fill=`longbeach$intake_condition`, values=Frequency)) +
-  geom_waffle() +
-  theme_void()
+```{r}
+# group similar colours
+colour_animal <- colour_animal %>%
+  mutate(primary_color = case_when(
+    primary_color %in% c('orange tabby', 'apricot', 'blonde', 'fawn', 'flame point', 'gold', 'orange', 'red', 'red merle', 'yellow', 'yellow brindle') ~ 'ginger',
+    primary_color %in% c('black', 'black smoke', 'black tabby') ~ 'black',
+    primary_color %in% c('grey lilac', 'silver tabby','gray tabby', 'blue', 'blue brindle', 'blue merle', 'blue point', 'gray', 'seal', 'seal point', 'silver') ~ 'grey',
+    primary_color %in% c('brown', 'brown tabby', 'brown merle', 'brown brindle', 'buff', 'chocolate', 'chocolate point', 'tan', 'brown tiger', 'brown  merle', 'brown  tabby') ~ 'brown',
+    primary_color %in% c('cream tabby', 'cream', 'snowshoe', 'white') ~ 'white',
+    primary_color %in% c('lynx point', 'lilac point', 'point', 'tricolor', 'lilac lynx point', 'calico', 'calico dilute', 'calico tabby', 'calico point', 'torbi', 'tortie', 'tortie dilute') ~ 'multicolour',
+    TRUE ~ primary_color
+  )) %>%
+  arrange(primary_color)
+
+```
+
+
+```{r}
+# waffle plot of colours
+ggplot(colour_animal, aes(fill=primary_color, values=Frequency/20)) +
+  geom_waffle(color = "white", size = 0.1, n_rows = 30) +
+  theme_void() +
+  coord_fixed(ratio = 1) +
+  scale_fill_manual(values = c("#000000", "#622a0f", "#FFA07A", "#2df47a", "#a9a9a9", "#FF6347", "#fbb1f3","#b1d9fb","#eeeee6" )) +
+  theme(legend.title = element_blank()) 
 ```
 
