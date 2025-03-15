@@ -1,5 +1,5 @@
 ---
-title: "TidyTuesdays"
+title: "Tidy Tuesdays - An exploration of the Longbeach Animal Shelter dataset"
 author: "Liam Cottrell"
 date: "2025-03-03"
 output: html_document
@@ -11,6 +11,7 @@ library(tidyverse)
 library(waffle)
 
 longbeach <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-04/longbeach.csv', show_col_types = FALSE)
+View(longbeach)
 
 ```
 
@@ -105,5 +106,48 @@ ggplot(colour_animal, aes(fill=primary_color, values=Frequency/20)) +
   coord_fixed(ratio = 1) +
   scale_fill_manual(values = c("#000000", "#622a0f", "#FFA07A", "#2df47a", "#a9a9a9", "#FF6347", "#fbb1f3","#b1d9fb","#eeeee6" )) +
   theme(legend.title = element_blank()) 
+```
+
+## age
+
+```{r}
+animal_stats <- longbeach %>%
+  select(intake_date, outcome_date, outcome_type, dob) %>%
+  filter(outcome_type == 'adoption') %>%
+  mutate(adoption_time = as.numeric(outcome_date -intake_date, na.rm=TRUE)) %>%
+  mutate(intake_age = as.numeric(intake_date - dob, na.rm=TRUE)) %>%
+  filter(!is.na(adoption_time)) %>%
+  filter(!is.na(intake_age)) %>%
+  filter(adoption_time > 0) %>%
+  filter(intake_age > 30) %>%
+  arrange(intake_age)
+
+head(animal_stats)
+```
+
+```{r}
+age <- c(animal_stats$intake_age)
+adopt <- c(animal_stats$adoption_time)
+sum(age > 0)
+sum(adopt > 0)
+with(animal_stats, cor(intake_age, adoption_time))
+
+#with(animal_stats, cor.test(intake_age, adoption_time))
+```
+```{r}
+ggplot(animal_stats, aes(x = age, y = adopt)) +
+  geom_point() 
+```
+
+
+```{r}
+
+model1 <- lm(age ~ adopt, data=animal_stats)
+summary(model1)
+
+```
+```{r}
+library(performance)
+check_model(model1)
 ```
 
