@@ -1,14 +1,25 @@
 import numpy as np
 import pandas as pd
 
-# read in csv
+#read in csv
 df = pd.read_csv('./Air_Quality_Continuous.csv')
 
-# sort by VPM10
-df.sort_values(by=['VPM10'])
+#sort by timestamp
+df = df.sort_values(by=['Date_Time'], ascending=True)
 
-# display first 5 rows
+#display first 5 rows
 df.head()
 
-# check if ObjectId2 is unique and can be used as a primary key
-df['ObjectId2'].is_unique
+#check for empty variables
+print(df.isnull().all())
+
+#check if objectid2 is unique
+print(df['ObjectId2'].is_unique)
+
+#remove objectid
+df = df.drop('ObjectId', axis=1)
+
+#check for missing rows
+num_rows = df.shape[0]
+if num_rows == 1603492:
+    print("No rows missing")
