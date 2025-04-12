@@ -54,3 +54,6 @@ df = df[df['r_date_time'] > '2015-01-01']
 
 #check that everything has worked
 df.head()
+
+#write to csv
+df.to_csv('cropped_data.csv')
