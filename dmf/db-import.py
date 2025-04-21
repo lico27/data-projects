@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import *
 from sqlalchemy.orm import *
 
-db_name = 'dmf_pollution'
+db_name = 'ass'
 
 #set up database and tables
 try:
@@ -44,7 +44,7 @@ try:
     class Reading(Base):
         __tablename__ = 'reading'
         r_id = Column(Integer, primary_key=True)
-        s_id_fk = Column(Integer, ForeignKey('station.s_id'))
+        s_id_fk = Column(Integer, ForeignKey('station.s_id'), nullable=False)
         r_date_time = Column(DateTime, nullable=False)
         r_nox = Column(Float)
         r_no2 = Column(Float)
@@ -69,7 +69,7 @@ try:
     class MetadataSchema(Base):
         __tablename__ = 'metadata_schema'
         m_id = Column(Integer, primary_key=True)
-        m_measure = Column(String(25))
+        m_measure = Column(String(25), nullable=False)
         reading_column_name = Column(String(25), nullable=False)
         m_desc = Column(String(150), nullable=False)
         m_unit = Column(String(25), nullable=False)
@@ -80,12 +80,12 @@ try:
 except Exception as e:
     print(f'Database setup failed: {e}')
 
-#import data from csv to populate tables
+#import data from csv files to populate supporting tables (constituency, station, and metadata_schema)
 
 #get file paths of csvs
-constituency_data = './constituency.csv'
-station_data = './station.csv'
-measure_data = './metadata_schema.csv'
+constituency_data = '/constituency.csv'
+station_data = '/station.csv'
+measure_data = '/metadata_schema.csv'
 
 try:
     #read data
@@ -98,6 +98,24 @@ try:
         c_df.to_sql('constituency', con=conn, index=False, if_exists='append')
         s_df.to_sql('station', con=conn, index=False, if_exists='append')
         m_df.to_sql('metadata_schema', con=conn, index=False, if_exists='append')
+
+    print('Data imported successfully')
+
+except Exception as e:
+    print(f'Data import failed: {e}')
+
+#import data from csv file to populate reading table with cleansed cropped data
+
+#get file path of csv
+reading_data = '/cropped_data.csv'
+
+try:
+    #read data
+    r_df = pd.read_csv(reading_data)
+
+    #insert data into table
+    with engine.connect() as conn:
+        r_df.to_sql('reading', con=conn, index=False, if_exists='append')
 
     print('Data imported successfully')
 

@@ -52,8 +52,12 @@ df = df.sort_values(by=['r_date_time'], ascending=False)
 #crop data - remove r_date_time values before 01/01/2015 
 df = df[df['r_date_time'] > '2015-01-01']
 
-#check that everything has worked
-df.head()
+#confirm successful cropping and check how many rows are left
+first_date = df['r_date_time'].min()
+last_date = df['r_date_time'].max()
+new_length = df.shape[0]
+
+print(f"The data is cropped between {first_date} and {last_date}. There are now {new_length} rows.")
 
 #write to csv
 df.to_csv('cropped_data.csv')
