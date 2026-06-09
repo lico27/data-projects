@@ -36,8 +36,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-*.json
-
 private*
 .Rproj.user
 
