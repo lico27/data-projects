@@ -1,0 +1,50 @@
+[
+    {
+        "carrier_name": "Correios",
+        "carrier_code": "COR",
+        "regions_covered": ["SP", "RJ", "MG", "BA", "PR", "RS", "SC", "PE", "CE", "GO"],
+        "avg_delivery_days": 8,
+        "on_time_rate": 0.71,
+        "active": true
+    },
+    {
+        "carrier_name": "Jadlog",
+        "carrier_code": "JAD",
+        "regions_covered": ["SP", "RJ", "MG", "PR", "RS"],
+        "avg_delivery_days": 5,
+        "on_time_rate": 0.84,
+        "active": true
+    },
+    {
+        "carrier_name": "Total Express",
+        "carrier_code": "TOT",
+        "regions_covered": ["SP", "RJ", "MG"],
+        "avg_delivery_days": 4,
+        "on_time_rate": 0.89,
+        "active": true
+    },
+    {
+        "carrier_name": "Braspress",
+        "carrier_code": "BRA",
+        "regions_covered": ["SP", "RJ", "MG", "PR", "RS", "SC", "GO", "MT"],
+        "avg_delivery_days": 6,
+        "on_time_rate": 0.81,
+        "active": true
+    },
+    {
+        "carrier_name": "Rodonaves",
+        "carrier_code": "ROD",
+        "regions_covered": ["SP", "MG", "PR", "RS", "SC"],
+        "avg_delivery_days": 7,
+        "on_time_rate": 0.76,
+        "active": false
+    },
+    {
+        "carrier_name": "Azul Cargo",
+        "carrier_code": "AZU",
+        "regions_covered": ["SP", "RJ", "MG", "BA", "PE", "CE", "AM", "PA"],
+        "avg_delivery_days": 3,
+        "on_time_rate": 0.91,
+        "active": true
+    }
+]
